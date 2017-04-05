@@ -6,6 +6,9 @@
 // http://prusamendel.org
 // and D. Scott Williamson
 
+// Default facets for cylinders
+$fn=30;
+
 module corner_base(){	
 	translate([-9,-11,0])cube([18,22,49]);
 }
@@ -14,31 +17,31 @@ module corner_holes(){
 	translate([-11,-11,0])
 	{
 		// Top hole
-		translate([0,11,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=4.4, $fn=30);
+		translate([0,11,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=4.4);
 		// Top hole bridge
 		translate([0,8.8,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=2.6, $fn=6);
 
 		// Bottom hole
-		translate([0,11,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=4.4, $fn=30);
+		translate([0,11,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=4.4);
 		// Bottom hole bridge
 		translate([0,8.8,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=2.6, $fn=6);
 
 		// Middle hole
-		translate([11,0,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=5.4, $fn=30);
+		translate([11,0,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 270, r=5.4);
 		
 		// Washer hole
-		translate([11,-3,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 10, r=11, $fn=30);
+		translate([11,-3,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = 10, r=11);
 		
 		// Top smooth rod insert
 		// Smooth rod place
-		translate([11,2.75,47]) rotate([0,90,90]) cylinder(h = 10, r=4.2, $fn=30); 
+		translate([11,2.75,47]) rotate([0,90,90]) cylinder(h = 10, r=4.2); 
 		// Ziptie
 		translate([-5,6,41])  cube([30,3.5,2]);
 		  
 		  // LM8UU keepout
 		difference()
 		{
-		  translate([11,12.5,46]) rotate([0,90,90]) cylinder(h = 270, r=8, $fn=30);
+		  translate([11,12.5,46]) rotate([0,90,90]) cylinder(h = 270, r=8);
 		  translate([21,12.5,62]) rotate([0,90,90]) cube([20,20,30]);
 		} 
 		  
