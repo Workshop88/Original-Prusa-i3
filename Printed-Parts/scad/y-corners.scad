@@ -26,8 +26,8 @@ washer_height=10;
 smooth_rod_radius=4.2;
 smooth_rod_length=10;
 
-corner_width=(longitudinal_rod_radius*2)+8;	// 18
-corner_height=(horizontal_rod_radius*2)+14; // 22
+corner_width=(longitudinal_rod_radius*2)+8;
+corner_height=(horizontal_rod_radius*2)+14;
 corner_depth=49;
 
 lm8uu_keepout_radius=8;
@@ -87,36 +87,34 @@ module corner_holes()
 
 module corner_fancy()
 {
+	// Subtractive block dimension
 	block_width=30;
 
 	// Side corner cutouts
-//	translate([-8,-9,0])
 	translate([-(corner_width/2-1),-(corner_height/2-2),0])
 		rotate([0,0,-45-180])
 			translate([-block_width/2,0,-1]) 
 				cube([block_width,block_width,corner_depth+2]);
-//	translate([8,-9,0]) 
+
 	translate([(corner_width/2-1),-(corner_height/2-2),0])	
 		rotate([0,0,45-180]) 
 			translate([-block_width/2,0,-1]) 
 				cube([block_width,block_width,corner_depth+2]);
 
 	// Top corner cutouts
-//	translate([7,0,49]) 
 	translate([(corner_width/2-2),0,corner_depth]) 
 		rotate([0,45,0]) 
 			translate([-block_width/2,-block_width/2,0]) 
 				cube([block_width,block_width,block_width]);
 
-//	translate([-7,0,49]) 
 	translate([-(corner_width/2-2),0,corner_depth]) 
 		rotate([0,-45,0]) 
 			translate([-block_width/2,-block_width/2,0]) 
 				cube([block_width,block_width,block_width]);
 
+	// Top front edge cutout
 	rotate([0,0,90])
 	{
-//		translate([-9.5,0,49]) 	
 		translate([-(corner_height/2-1.5),0,corner_depth]) 	
 			rotate([0,-45,0]) 
 				translate([-block_width/2,-block_width/2,0]) 
