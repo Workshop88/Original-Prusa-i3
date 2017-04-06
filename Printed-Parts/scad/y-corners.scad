@@ -6,21 +6,28 @@
 // http://prusamendel.org
 // and D. Scott Williamson
 
-horizontal_rod_radius=4.4;
+metric=true;
+
+inch2mm=25.4;
+
+horizontal_rod_radius = (metric ? 4 : ((5/16)*inch2mm/2));
+horizontal_rod_hole_radius= horizontal_rod_radius + 0.4;
 horizontal_rod_length=270;
 horizontal_rod_bridge_radius=2.6;
 
-longitudinal_rod_radius=5.4;
+longitudinal_rod_radius= (metric ? 5 : ((1/2)*inch2mm/2));
+longitudinal_rod_hole_radius= longitudinal_rod_radius + 0.4;
 longitudinal_rod_length=270;
 
-washer_radius=11;
+washer_radius=(metric ? 11 : ((1+3/8)*inch2mm/2));
+washer_hole_radius=washer_radius + 0.4;
 washer_height=10;
 
 smooth_rod_radius=4.2;
 smooth_rod_length=10;
 
-corner_width=18;
-corner_height=22;
+corner_width=(longitudinal_rod_radius*2)+8;	// 18
+corner_height=(horizontal_rod_radius*2)+14; // 22
 corner_depth=49;
 
 lm8uu_keepout_radius=8;
@@ -30,32 +37,34 @@ ziptie_width=3.5;
 ziptie_length=30;
 ziptie_height=2;
 
+
+
 // Default facets for cylinders
-$fn=30;
+$fn=64;
 
 module corner_base()
 {	
-	translate([-9,-11,0])cube([18,22,49]);
+	translate([-corner_width/2,-corner_height/2,0])cube([corner_width,corner_height,corner_depth]);
 }
 
 module corner_holes()
 {
-	translate([-11,-11,0]){
+	translate([-11,-corner_height/2,0]){
 		// Top hole
-		translate([0,11,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_radius);
+		translate([0,corner_height/2,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_hole_radius);
 		// Top hole bridge
 		translate([0,8.8,30]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_bridge_radius, $fn=6);
 
 		// Bottom hole
-		translate([0,11,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_radius);
+		translate([0,corner_height/2,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_hole_radius);
 		// Bottom hole bridge
 		translate([0,8.8,10]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = horizontal_rod_length, r=horizontal_rod_bridge_radius, $fn=6);
 
 		// Middle hole
-		translate([11,0,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = longitudinal_rod_length, r=longitudinal_rod_radius);
+		translate([11,0,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = longitudinal_rod_length, r=longitudinal_rod_hole_radius);
 
 		// Washer hole
-		translate([11,-3,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = washer_height, r=washer_radius);
+		translate([11,-3,20]) rotate([0,0,90]) rotate([0,90,0]) translate([0,0,-5]) cylinder(h = washer_height, r=washer_hole_radius);
 
 		// Top smooth rod insert
 		// Smooth rod place
@@ -78,17 +87,40 @@ module corner_holes()
 
 module corner_fancy()
 {
+	block_width=30;
+
 	// Side corner cutouts
-	translate([-8,-9,0]) rotate([0,0,-45-180]) translate([-15,0,-1]) cube([30,30,51]);
-	translate([8,-9,0]) rotate([0,0,45-180]) translate([-15,0,-1]) cube([30,30,51]);
+//	translate([-8,-9,0])
+	translate([-(corner_width/2-1),-(corner_height/2-2),0])
+		rotate([0,0,-45-180])
+			translate([-block_width/2,0,-1]) 
+				cube([block_width,block_width,corner_depth+2]);
+//	translate([8,-9,0]) 
+	translate([(corner_width/2-1),-(corner_height/2-2),0])	
+		rotate([0,0,45-180]) 
+			translate([-block_width/2,0,-1]) 
+				cube([block_width,block_width,corner_depth+2]);
 
 	// Top corner cutouts
-	translate([7,0,49]) rotate([0,45,0]) translate([-15,-15,0]) cube([30,30,30]);
-	translate([-7,0,49]) rotate([0,-45,0]) translate([-15,-15,0]) cube([30,30,30]);
+//	translate([7,0,49]) 
+	translate([(corner_width/2-2),0,corner_depth]) 
+		rotate([0,45,0]) 
+			translate([-block_width/2,-block_width/2,0]) 
+				cube([block_width,block_width,block_width]);
+
+//	translate([-7,0,49]) 
+	translate([-(corner_width/2-2),0,corner_depth]) 
+		rotate([0,-45,0]) 
+			translate([-block_width/2,-block_width/2,0]) 
+				cube([block_width,block_width,block_width]);
 
 	rotate([0,0,90])
 	{
-		translate([-9.5,0,49]) rotate([0,-45,0]) translate([-15,-15,0]) cube([30,30,30]);
+//		translate([-9.5,0,49]) 	
+		translate([-(corner_height/2-1.5),0,corner_depth]) 	
+			rotate([0,-45,0]) 
+				translate([-block_width/2,-block_width/2,0]) 
+					cube([block_width,block_width,block_width]);
 	}
 }
 
@@ -108,17 +140,18 @@ module selective_infill()
 module corner()
 {
 	// Rotate the part for better printing
-	translate([0,0,11]) rotate([-90,0,0]) 
+	translate([0,0,corner_height/2]) rotate([-90,0,0]) 
 	{
 		difference(){
 			corner_base();
 			corner_holes();
 			corner_fancy();
-			translate([0,11,0]) rotate([90,0,0])selective_infill();
+			translate([0,corner_height/2,0]) rotate([90,0,0])selective_infill();
 		}
 	}
 }
 
+// Render part
 corner();
 
 
