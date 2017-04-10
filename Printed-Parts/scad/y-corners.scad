@@ -6,22 +6,26 @@
 // http://prusamendel.org
 // Parameterized by D. Scott Williamson
 
-metric=false;
+metric=true;
 
 inch2mm=25.4;
 
+// horizontal rod dimensions
 horizontal_rod_radius = (metric ? 4 : ((5/16)*inch2mm/2));
 horizontal_rod_hole_radius= horizontal_rod_radius + 0.4;
 horizontal_rod_length=270;
 horizontal_rod_bridge_radius=2.6;
+horizontal_rod_washer_radius=(metric ? 10 : ((15/16)*inch2mm/2));
+horizontal_rod_lower_height=horizontal_rod_washer_radius;
+horizontal_rod_upper_height=horizontal_rod_washer_radius*3;
 
+// longitudinal rod dimensions
 longitudinal_rod_radius= (metric ? 5 : ((1/2)*inch2mm/2));
 longitudinal_rod_hole_radius= longitudinal_rod_radius + 0.4;
 longitudinal_rod_length=270;
-
-washer_radius=(metric ? 11 : ((1+3/8)*inch2mm/2));
-washer_hole_radius=washer_radius + 0.4;
-washer_height=10;
+longitudinal_rod_washer_radius=(metric ? 11 : ((1+3/8)*inch2mm/2));
+longitudinal_rod_washer_hole_radius=longitudinal_rod_washer_radius + 0.4;
+longitudinal_rod_washer_height=10;
 
 smooth_rod_radius=4.2;
 smooth_rod_length=10;
@@ -51,23 +55,23 @@ module corner_holes()
 	translate([-11,-corner_height/2,0])
 	{
 		// Top hole for horizontal rod
-		translate([0,corner_height/2,30]) 
+		translate([0,corner_height/2,horizontal_rod_upper_height]) 
 			rotate([0,90,0]) 
 				translate([0,0,-5]) 
 					cylinder(h = horizontal_rod_length, r=horizontal_rod_hole_radius);
 		// Top hole bridge for horizontal rod
-		translate([0,8.8,30])
+		translate([0,8.8,horizontal_rod_upper_height])
 			rotate([0,90,0]) 
 				translate([0,0,-5]) 
 					cylinder(h = horizontal_rod_length, r=horizontal_rod_bridge_radius, $fn=6);
 
 		// Bottom hole for horizontal rod
-		translate([0,corner_height/2,10]) 
+		translate([0,corner_height/2,horizontal_rod_lower_height]) 
 			rotate([0,90,0]) 
 				translate([0,0,-5]) 
 					cylinder(h = horizontal_rod_length, r=horizontal_rod_hole_radius);
 		// Bottom hole bridge for horizontal rod
-		translate([0,8.8,10]) 
+		translate([0,8.8,horizontal_rod_lower_height]) 
 			rotate([0,90,0]) 
 				translate([0,0,-5]) 
 					cylinder(h = horizontal_rod_length, r=horizontal_rod_bridge_radius, $fn=6);
@@ -84,7 +88,7 @@ module corner_holes()
 			rotate([0,0,90]) 
 				rotate([0,90,0]) 
 					translate([0,0,-5]) 
-						cylinder(h = washer_height, r=washer_hole_radius);
+						cylinder(h = longitudinal_rod_washer_height, r=longitudinal_rod_washer_hole_radius);
 
 		// Smooth rod place
 		translate([11,2.75,47]) 
