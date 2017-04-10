@@ -6,7 +6,7 @@
 // http://prusamendel.org
 // Parameterized by D. Scott Williamson
 
-metric=true;
+metric=false;
 
 inch2mm=25.4;
 
@@ -102,12 +102,17 @@ module corner_holes()
 				rotate([0,90,90]) 
 					cylinder(h = lm8uu_keepout_length, r=lm8uu_keepout_radius);
 			translate([21,12.5,62]) 
-				rotate([0,90,90]) cube([20,20,30]);
+				rotate([0,90,90]) 
+					cube([20,20,30]);
 		} 
 
+		// Subtractive block dimension
+		block_width=30;
+
 		// Top smooth rod clearance knockout
-		translate([21,12.5,57]) 
-			rotate([0,90,90]) cube([15.2,20,20]);
+		translate([corner_height/2+block_width/2,12.5,corner_depth+8]) 
+			rotate([0,90,90]) 
+				cube([(block_width/2)+0.2,block_width,block_width]);
 	}
 }
 
