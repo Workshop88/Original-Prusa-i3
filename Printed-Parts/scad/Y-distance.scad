@@ -1,9 +1,16 @@
 // PRUSA iteration3
-// X carriage
+// Y motor distance spacer
 // GNU GPL v3
 // Josef Průša <iam@josefprusa.cz> and contributors
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
+// Parameterized by D. Scott Williamson
+
+// Include master parameters file
+include <parameters.scad>;
+
+// Override metric setting here if desired (anywhere after include)
+//metric=false;
 
 difference()
 {

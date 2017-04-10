@@ -4,8 +4,17 @@
 // Josef Průša <iam@josefprusa.cz> and contributors
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
+// Parameterized by D. Scott Williamson
 
+// DSW: looks like there used to be a configuration file to parameterize this mount
 //include <configuration.scad>
+
+// Include master parameters file
+include <parameters.scad>;
+
+// Override metric setting here if desired (anywhere after include)
+//metric=false;
+
 
 module y_motor_base(){
     
