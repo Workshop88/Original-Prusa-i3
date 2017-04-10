@@ -23,12 +23,16 @@ horizontal_rod_upper_height=horizontal_rod_washer_radius*3;
 longitudinal_rod_radius= (metric ? 5 : ((1/2)*inch2mm/2));
 longitudinal_rod_hole_radius= longitudinal_rod_radius + 0.4;
 longitudinal_rod_length=270;
+longitudinal_rod_height=20;
+
 longitudinal_rod_washer_radius=(metric ? 11 : ((1+3/8)*inch2mm/2));
 longitudinal_rod_washer_hole_radius=longitudinal_rod_washer_radius + 0.4;
-longitudinal_rod_washer_height=10;
+longitudinal_rod_washer_thickness=10;
 
 smooth_rod_radius=4.2;
 smooth_rod_length=10;
+smooth_rod_height=47;
+smooth_rod_end_thickness=2.75;
 
 corner_width=(longitudinal_rod_radius*2)+8;
 corner_height=(horizontal_rod_radius*2)+14;
@@ -36,6 +40,8 @@ corner_depth=49;
 
 lm8uu_keepout_radius=8;
 lm8uu_keepout_length=270;
+lm8uu_keepout_height=smooth_rod_height-1;
+lm8uu_keepout_offset=12.5;
 
 ziptie_width=3.5;
 ziptie_length=30;
@@ -77,21 +83,21 @@ module corner_holes()
 					cylinder(h = horizontal_rod_length, r=horizontal_rod_bridge_radius, $fn=6);
 
 		// Middle hole for larger longitudinal rod
-		translate([11,0,20]) 
+		translate([corner_height/2,0,longitudinal_rod_height]) 
 			rotate([0,0,90]) 
 				rotate([0,90,0]) 
 					translate([0,0,-5]) 
 						cylinder(h = longitudinal_rod_length, r=longitudinal_rod_hole_radius);
 
 		// Washer hole for larger longitudinal rod
-		translate([11,-3,20]) 
+		translate([corner_height/2,-3,longitudinal_rod_height]) 
 			rotate([0,0,90]) 
 				rotate([0,90,0]) 
 					translate([0,0,-5]) 
-						cylinder(h = longitudinal_rod_washer_height, r=longitudinal_rod_washer_hole_radius);
+						cylinder(h = longitudinal_rod_washer_thickness, r=longitudinal_rod_washer_hole_radius);
 
 		// Smooth rod place
-		translate([11,2.75,47]) 
+		translate([corner_height/2,smooth_rod_end_thickness,smooth_rod_height]) 
 			rotate([0,90,90]) 
 				cylinder(h = smooth_rod_length, r=smooth_rod_radius); 
 		
@@ -102,12 +108,12 @@ module corner_holes()
 		// LM8UU keepout
 		difference()
 		{
-			translate([11,12.5,46]) 
+			translate([corner_height/2,12.5,lm8uu_keepout_height]) 
 				rotate([0,90,90]) 
 					cylinder(h = lm8uu_keepout_length, r=lm8uu_keepout_radius);
-			translate([21,12.5,62]) 
+			translate([26,lm8uu_keepout_offset,62]) 
 				rotate([0,90,90]) 
-					cube([20,20,30]);
+					cube([20,30,30]);
 		} 
 
 		// Subtractive block dimension
@@ -117,6 +123,10 @@ module corner_holes()
 		translate([corner_height/2+block_width/2,12.5,corner_depth+8]) 
 			rotate([0,90,90]) 
 				cube([(block_width/2)+0.2,block_width,block_width]);
+
+		// debug cross section
+		//translate([corner_height/2,-1,-1])
+		//	cube([100,100,100]);
 	}
 }
 
